@@ -1,0 +1,1512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yasin Samooei - Backend Developer</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet">
+    <style>
+        :root {
+            --primary-bg: #0d1117;
+            --secondary-bg: #161b22;
+            --card-bg: #1c2128;
+            --accent: #58a6ff;
+            --accent-glow: rgba(88, 166, 255, 0.4);
+            --success: #3fb950;
+            --text-primary: #c9d1d9;
+            --text-secondary: #8b949e;
+            --border: #30363d;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--primary-bg);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.03;
+            pointer-events: none;
+        }
+
+        .bg-grid {
+            background-image: linear-gradient(var(--accent) 1px, transparent 1px),
+            linear-gradient(90deg, var(--accent) 1px, transparent 1px);
+            background-size: 50px 50px;
+            width: 100%;
+            height: 100%;
+            animation: gridMove 20s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% {
+                transform: translate(0, 0);
+            }
+            100% {
+                transform: translate(50px, 50px);
+            }
+        }
+
+        /* Floating particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: var(--accent);
+            border-radius: 50%;
+            opacity: 0.5;
+            animation: float 15s infinite;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.5;
+            }
+            90% {
+                opacity: 0.5;
+            }
+            100% {
+                transform: translateY(-100vh) translateX(50px);
+                opacity: 0;
+            }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Header */
+        header {
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            background: rgba(13, 17, 23, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            z-index: 100;
+            animation: slideDown 0.5s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--accent);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: var(--transition);
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+            text-shadow: 0 0 20px var(--accent-glow);
+        }
+
+        .logo-icon {
+            animation: rotate 10s linear infinite;
+        }
+
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 8px 12px;
+            border-radius: 6px;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            transition: var(--transition);
+            transform: translateX(-50%);
+        }
+
+        nav a:hover {
+            color: var(--accent);
+        }
+
+        nav a:hover::after {
+            width: 80%;
+        }
+
+        /* Hero */
+        .hero {
+            padding: 100px 0 80px;
+            display: flex;
+            align-items: center;
+            min-height: 85vh;
+        }
+
+        .hero-content {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .hero-text h1 {
+            font-size: 64px;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: fadeInUp 0.8s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-text h2 {
+            font-size: 28px;
+            color: var(--accent);
+            margin-bottom: 20px;
+            animation: fadeInUp 0.8s ease 0.2s backwards;
+        }
+
+        .hero-text p {
+            font-size: 18px;
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+            line-height: 1.8;
+            animation: fadeInUp 0.8s ease 0.4s backwards;
+        }
+
+        .hero-image {
+            position: relative;
+            animation: fadeInUp 0.8s ease 0.6s backwards;
+        }
+
+        .profile-container {
+            position: relative;
+            width: 320px;
+            height: 320px;
+            margin: 0 auto;
+        }
+
+        .profile-ring {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 2px solid var(--accent);
+            border-radius: 50%;
+            animation: pulse 3s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.1);
+                opacity: 0.5;
+            }
+        }
+
+        .profile-img {
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--accent);
+            box-shadow: 0 0 40px var(--accent-glow);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            transition: var(--transition);
+        }
+
+        .profile-img:hover {
+            transform: translate(-50%, -50%) scale(1.05);
+            box-shadow: 0 0 60px var(--accent-glow);
+        }
+
+        /* Social Links */
+        .social-links {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .social-link {
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: var(--transition);
+            font-size: 18px;
+        }
+
+        .social-link:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 20px var(--accent-glow);
+        }
+
+        /* Section */
+        .section {
+            margin-bottom: 100px;
+        }
+
+        .section-title {
+            font-size: 36px;
+            margin-bottom: 50px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .section-title::before {
+            content: '';
+            width: 40px;
+            height: 3px;
+            background: var(--accent);
+            animation: expand 1s ease-in-out infinite alternate;
+        }
+
+        @keyframes expand {
+            from {
+                width: 40px;
+            }
+            to {
+                width: 60px;
+            }
+        }
+
+        /* Cards Grid */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 30px;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(88, 166, 255, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .card:hover::before {
+            left: 100%;
+        }
+
+        .card:hover {
+            border-color: var(--accent);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 40px rgba(88, 166, 255, 0.2);
+        }
+
+        /* Experience Timeline */
+        .timeline {
+            position: relative;
+            padding-left: 40px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--border);
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-bottom: 40px;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -46px;
+            top: 0;
+            width: 12px;
+            height: 12px;
+            background: var(--accent);
+            border: 3px solid var(--primary-bg);
+            border-radius: 50%;
+            animation: pulse-dot 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-dot {
+            0%, 100% {
+                box-shadow: 0 0 0 0 var(--accent-glow);
+            }
+            50% {
+                box-shadow: 0 0 0 8px var(--accent-glow);
+            }
+        }
+
+        .exp-header {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .company-logo {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            object-fit: cover;
+            border: 2px solid var(--border);
+            transition: var(--transition);
+        }
+
+        .company-logo:hover {
+            border-color: var(--accent);
+            transform: scale(1.1);
+        }
+
+        .exp-info h3 {
+            font-size: 20px;
+            margin-bottom: 8px;
+        }
+
+        .exp-info h3 a {
+            color: var(--text-primary);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .exp-info h3 a:hover {
+            color: var(--accent);
+        }
+
+        .exp-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .badge-fulltime {
+            background: rgba(63, 185, 80, 0.15);
+            color: var(--success);
+            border: 1px solid var(--success);
+        }
+
+        .badge-contract {
+            background: rgba(88, 166, 255, 0.15);
+            color: var(--accent);
+            border: 1px solid var(--accent);
+        }
+
+        .date-range {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--text-secondary);
+            font-size: 13px;
+        }
+
+        .exp-desc {
+            color: var(--text-secondary);
+            margin-bottom: 15px;
+            line-height: 1.7;
+        }
+
+        /* Skills */
+        .skills-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .skill-tag {
+            padding: 6px 14px;
+            background: rgba(88, 166, 255, 0.1);
+            border: 1px solid rgba(88, 166, 255, 0.3);
+            border-radius: 20px;
+            color: var(--accent);
+            font-size: 13px;
+            font-weight: 500;
+            transition: var(--transition);
+            cursor: default;
+        }
+
+        .skill-tag:hover {
+            background: var(--accent);
+            color: var(--primary-bg);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px var(--accent-glow);
+        }
+
+        /* Projects */
+        .project-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 30px;
+            transition: var(--transition);
+            height: 100%;
+            margin-bottom: 10px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .project-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 40px rgba(88, 166, 255, 0.2);
+        }
+
+        .project-header {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .project-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            object-fit: cover;
+            border: 2px solid var(--border);
+        }
+
+        .project-title {
+            font-size: 20px;
+            margin-bottom: 5px;
+        }
+
+        .project-title a {
+            color: var(--text-primary);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .project-title a:hover {
+            color: var(--accent);
+        }
+
+        /* Events Gallery */
+        .events-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .event-card {
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            height: 220px;
+            cursor: pointer;
+            border: 1px solid var(--border);
+            transition: var(--transition);
+        }
+
+        .event-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent);
+            box-shadow: 0 10px 40px rgba(88, 166, 255, 0.3);
+        }
+
+        .event-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .event-card:hover .event-img {
+            transform: scale(1.1);
+        }
+
+        .event-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 20px;
+            background: linear-gradient(transparent, rgba(13, 17, 23, 0.95));
+            transform: translateY(0);
+            transition: var(--transition);
+        }
+
+        .event-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .event-date {
+            font-size: 13px;
+            color: var(--accent);
+        }
+
+        /* Personal Info List */
+        .info-list {
+            list-style: none;
+        }
+
+        .info-list li {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .info-list li:last-child {
+            border-bottom: none;
+        }
+
+        .info-list i {
+            color: var(--accent);
+            width: 20px;
+            text-align: center;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--card-bg);
+            border: 1px solid var(--accent);
+            border-radius: 12px;
+            max-width: 800px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            padding: 25px 30px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 24px;
+            color: var(--accent);
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 28px;
+            cursor: pointer;
+            transition: var(--transition);
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+        }
+
+        .modal-close:hover {
+            color: var(--accent);
+            background: rgba(88, 166, 255, 0.1);
+        }
+
+        .modal-body {
+            padding: 30px;
+        }
+
+        .modal-img {
+            width: 100%;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 50px 0;
+            border-top: 1px solid var(--border);
+            margin-top: 80px;
+            color: var(--text-secondary);
+        }
+
+        /* Education */
+        .edu-item {
+            padding: 20px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .edu-item:last-child {
+            border-bottom: none;
+        }
+
+        .edu-degree {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 8px;
+        }
+
+        .edu-institution {
+            font-size: 16px;
+            margin-bottom: 6px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .hero-text h1 {
+                font-size: 40px;
+            }
+
+            .hero-text h2 {
+                font-size: 22px;
+            }
+
+            .profile-container {
+                width: 250px;
+                height: 250px;
+            }
+
+            .profile-img {
+                width: 230px;
+                height: 230px;
+            }
+
+            nav ul {
+                display: none;
+            }
+
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section-title {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+<!-- Animated Background -->
+<div class="bg-animation">
+    <div class="bg-grid"></div>
+</div>
+
+<!-- Particles -->
+<div class="particles" id="particles"></div>
+
+<!-- Header -->
+<header>
+    <div class="container">
+        <div class="nav-container">
+            <a href="#" class="logo mono">
+                <i class="fas fa-code logo-icon"></i>
+                Yasin Samooei
+            </a>
+            <nav>
+                <ul>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#experience">Experience</a></li>
+                    <li><a href="#projects">Projects</a></li>
+                    <li><a href="#events">Events</a></li>
+                    <li><a href="#education">Education</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</header>
+
+<!-- Hero -->
+<section class="hero">
+    <div class="container">
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1 class="mono">Yasin Samooei</h1>
+                <h2 class="mono">Backend Developer & AI Specialist</h2>
+                <p>Master's student in Digital Electronics with 5+ years of professional experience in software
+                    development. Specialized in backend development with Python, Django, Django REST Framework, and Go.
+                    Passionate about AI, computer vision, and IoT systems integration.</p>
+                <div class="social-links">
+                    <a href="mailto:yasinsamooei.official@gmail.com" class="social-link" title="Email">
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                    <a href="https://github.com/YasinSamooei" target="_blank" class="social-link" title="GitHub">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="https://linkedin.com/in/yasin-samooei" target="_blank" class="social-link"
+                       title="LinkedIn">
+                        <i class="fab fa-linkedin"></i>
+                    </a>
+                    <a href="https://instagram.com/y.electrocode" target="_blank" class="social-link" title="Instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="hero-image">
+                <div class="profile-container">
+                    <div class="profile-ring"></div>
+                    <img src="./images/profile.jpg" alt="Yasin Samooie" class="profile-img">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Main Content -->
+<main class="container">
+    <!-- About Section -->
+    <section class="section" id="about">
+        <h2 class="section-title mono">About Me</h2>
+        <div class="cards-grid">
+            <div class="card">
+                <h3 style="color: var(--accent); margin-bottom: 20px; font-size: 20px;">Personal Information</h3>
+                <ul class="info-list">
+                    <li><i class="fas fa-user"></i> <span><strong>Name:</strong> Yasin Samooei</span></li>
+                    <li><i class="fas fa-map-marker-alt"></i> <span><strong>Location:</strong> Isfahan, Iran</span></li>
+                    <li><i class="fas fa-envelope"></i>
+                        <span><strong>Email:</strong> yasinsamooei.official@gmail.com</span></li>
+                    <li><i class="fas fa-graduation-cap"></i> <span><strong>Education:</strong> M.Sc. Digital Electronics</span>
+                    </li>
+                    <li><i class="fas fa-code"></i> <span><strong>Focus:</strong> Backend | AI | Iot</span></li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3 style="color: var(--accent); margin-bottom: 20px; font-size: 20px;">Technical Skills</h3>
+                <div class="skills-container">
+                    <span class="skill-tag">Python</span>
+                    <span class="skill-tag">Django</span>
+                    <span class="skill-tag">DRF</span>
+                    <span class="skill-tag">Go</span>
+                    <span class="skill-tag">PostgreSQL</span>
+                    <span class="skill-tag">OpenCV</span>
+                    <span class="skill-tag">TensorFlow</span>
+                    <span class="skill-tag">PyTorch</span>
+                    <span class="skill-tag">ML/DL</span>
+                    <span class="skill-tag">IoT</span>
+                    <span class="skill-tag">Git</span>
+                    <span class="skill-tag">FastAPI</span>
+                    <span class="skill-tag">JavaScript</span>
+                    <span class="skill-tag">Docker</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience Section -->
+    <section class="section" id="experience">
+        <h2 class="section-title mono">Work Experience</h2>
+        <div class="card">
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="exp-header">
+                        <img src="./images/job/payam.png" alt="payampardaz" class="company-logo">
+                        <div class="exp-info">
+                            <h3><a href="https://payampardaz.com" target="_blank">Golang Developer</a></h3>
+                            <div class="exp-meta">
+                                <span class="badge badge-fulltime"><i class="fas fa-briefcase"></i> Part-time</span>
+                                <span>payampardaz · Isfahan</span>
+                            </div>
+                            <div class="date-range">
+                                <i class="far fa-calendar"></i>
+                                <span>Jan 2025 - Sep 2025 · 9 mounth</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="exp-desc">
+                        I have actively contributed to multiple projects as a specialized back‑end developer using
+                        Golang, where I was responsible for the design, development, and maintenance of back‑end
+                        systems. My focus has been on delivering high‑performance, secure, and scalable solutions
+                        tailored to the unique requirements of each project. With expertise in database management, API
+                        integration, and system architecture, I have collaborated effectively within teams to ensure
+                        robust and efficient implementations.
+
+                        In particular, I have developed health‑check applications with Golang, as well as back‑end
+                        authentication services and administrative management panels, maintaining a strong emphasis on
+                        back‑end functionality and reliability.
+                    </div>
+                    <div class="skills-container">
+                        <span class="skill-tag">Go</span>
+                        <span class="skill-tag">PostgreSQL</span>
+                        <span class="skill-tag">Postman</span>
+                        <span class="skill-tag">Git</span>
+                        <span class="skill-tag">Backend</span>
+                        <span class="skill-tag">Redis</span>
+                        <span class="skill-tag">Traefik</span>
+                        <span class="skill-tag">OpenPolicyAgent</span>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="exp-header">
+                        <img src="./images/job/hitech.png" alt="Hitech" class="company-logo">
+                        <div class="exp-info">
+                            <h3><a href="https://hitechinnovation.ir" target="_blank">Software Developer & AI
+                                Engineer</a></h3>
+                            <div class="exp-meta">
+                                <!-- <span class="badge badge-contract"><i class="fas fa-file-contract"></i> Contract</span> -->
+                                <span class="badge badge-fulltime"><i class="fas fa-briefcase"></i> Part-time</span>
+                                <span>Hi-Tech · Isfahan</span>
+                            </div>
+                            <div class="date-range">
+                                <i class="far fa-calendar"></i>
+                                <span>Dec 2022 - Present · 2 yr 2 mo</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="exp-desc">
+                        As an Artificial Intelligence Developer at a cutting-edge Hi-Tech company specializing in
+                        medical engineering, I have honed my expertise in machine learning, image processing, and deep
+                        learning. My role involves creating sophisticated AI programs that seamlessly integrate with
+                        Django and Flask frameworks, enhancing the capabilities of web applications in the medical
+                        field. I have also successfully implemented these AI solutions on various hardware platforms,
+                        including Raspberry Pi, demonstrating versatility and innovation in deploying technology to
+                        solve complex problems.
+                    </div>
+                    <div class="skills-container">
+                        <span class="skill-tag">Machine Learning</span>
+                        <span class="skill-tag">Deep Learning</span>
+                        <span class="skill-tag">OpenCV</span>
+                        <span class="skill-tag">TensorFlow</span>
+                        <span class="skill-tag">PyTorch</span>
+                        <span class="skill-tag">Python</span>
+                        <span class="skill-tag">Django</span>
+                        <span class="skill-tag">DRF</span>
+                        <span class="skill-tag">Flask</span>
+                        <span class="skill-tag">Celery</span>
+                        <span class="skill-tag">Git</span>
+                        <span class="skill-tag">GitHub</span>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="exp-header">
+                        <img src="./images/job/giti.jpg" alt="Gitiget" class="company-logo">
+                        <div class="exp-info">
+                            <h3><a href="https://gitiget.com" target="_blank">Back End Developer</a></h3>
+                            <div class="exp-meta">
+                                <span class="badge badge-fulltime"><i class="fas fa-briefcase"></i> Part-time</span>
+                                <span>Gitiget · Isfahan</span>
+                            </div>
+                            <div class="date-range">
+                                <i class="far fa-calendar"></i>
+                                <span>Oct 2023 - Present · 2 yr 4 mo</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="exp-desc">
+                        As a Django Backend Specialist at GitiGet, I am entrusted with the backend responsibilities of
+                        advanced projects crafted with Django, FastAPI, and Django REST Framework (DRF). My expertise
+                        lies in optimizing performance, designing database structures, and developing efficient APIs. I
+                        have a proven track record of managing large-scale projects, particularly in the e-commerce
+                        sector, where I ensure robust and scalable solutions that drive business success.
+                    </div>
+                    <div class="skills-container">
+                        <span class="skill-tag">Python</span>
+                        <span class="skill-tag">Django</span>
+                        <span class="skill-tag">Django Channels</span>
+                        <span class="skill-tag">DRF</span>
+                        <span class="skill-tag">Pytest</span>
+                        <span class="skill-tag">Unit Testing</span>
+                        <span class="skill-tag">Postman</span>
+                        <span class="skill-tag">Locust</span>
+                        <span class="skill-tag">Git</span>
+                        <span class="skill-tag">GitHub</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section class="section" id="projects">
+        <h2 class="section-title mono">Projects</h2>
+<!--        <div class="cards-grid">-->
+
+            <div class="project-card">
+                <div class="project-header">
+                    <img src="./images/proj/goaleto.png" alt="Goaleto" class="project-icon">
+                    <div>
+                        <h3 class="project-title"><a href="https://goaleto.com" target="_blank">Goaleto</a></h3>
+                        <div class="date-range" style="margin-top: 5px;">
+                            <i class="far fa-calendar"></i>
+                            <span>Dec 2023 - Present</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="exp-desc">
+                    Goaleto – Lifestyle & Goal Management Application (Back‑End Developer, Django REST Framework)
+                    Developed the complete back‑end architecture for a multi‑lingual mobile application using Django
+                    REST
+                    Framework, supporting user registration, personalized goal tracking, and tailored nutrition plans.
+                    Implemented a customized administrative panel with Django to streamline content management and user
+                    tracking. Built a secure, scalable, and maintainable back‑end, integrating dynamic data models and
+                    API
+                    endpoints to power the mobile ecosystem. The platform is multi‑language by design (initially Persian
+                    and
+                    English, later extended to Italian and additional languages), ensuring accessibility and
+                    adaptability for a
+                    diverse user base.
+                </div>
+                <div class="skills-container" style="margin-top: auto;">
+                    <span class="skill-tag">Python</span>
+                    <span class="skill-tag">Django</span>
+                    <span class="skill-tag">DRF</span>
+                    <span class="skill-tag">MySQL</span>
+                    <span class="skill-tag">Postman</span>
+                    <span class="skill-tag">Git</span>
+                    <span class="skill-tag">GitHub</span>
+
+                </div>
+            </div>
+
+            <div class="project-card">
+                <div class="project-header">
+                    <img src="./images/proj/shorkhapp.png" alt="Shorkhapp" class="project-icon">
+                    <div>
+                        <h3 class="project-title"><a href="https://sorkhapp.com" target="_blank">Shorkhapp</a></h3>
+                        <div class="date-range" style="margin-top: 5px;">
+                            <i class="far fa-calendar"></i>
+                            <span>Dec 2023 - Present</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="exp-desc">
+                    Designed and implemented robust back‑end solutions using Django and Django REST Framework, with a
+                    strong
+                    emphasis on reliability, scalability, and maintainability. Established a comprehensive testing
+                    strategy with
+                    Pytest, ensuring full coverage across models, views, and endpoints. Integrated CI/CD pipelines to
+                    automate
+                    quality checks and streamline deployments, maintaining consistent code integrity across the team.
+                    Conducted
+                    load and performance testing with industry‑standard tools to validate system stability under high
+                    traffic,
+                    delivering secure and high‑performance applications in production environments.
+                </div>
+                <div class="skills-container" style="margin-top: auto;">
+                    <span class="skill-tag">Python</span>
+                    <span class="skill-tag">Django</span>
+                    <span class="skill-tag">DRF</span>
+                    <span class="skill-tag">Pytest</span>
+                    <span class="skill-tag">MySQL</span>
+                    <span class="skill-tag">Ajax</span>
+                    <span class="skill-tag">Unit Testing</span>
+                    <span class="skill-tag">Postman</span>
+                    <span class="skill-tag">Locust</span>
+                    <span class="skill-tag">Git</span>
+                    <span class="skill-tag">GitHub</span>
+
+                </div>
+            </div>
+
+            <div class="project-card">
+                <div class="project-header">
+                    <img src="./images/proj/art.png" alt="Diet App" class="project-icon">
+                    <div>
+                        <h3 class="project-title"><a href="" target="_blank">Art Of Diet</a></h3>
+                        <div class="date-range" style="margin-top: 5px;">
+                            <i class="far fa-calendar"></i>
+                            <span>Oct 2023 - Nov 2023</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="exp-desc">
+                    Developed the complete back‑end architecture for a mobile diet management application using Django
+                    REST
+                    Framework, enabling users to register personal information and receive tailored diet plans. Designed
+                    and
+                    implemented a customized administrative panel with Django to streamline content management and user
+                    tracking. Built a secure, scalable, and maintainable back‑end, integrating dynamic data models and
+                    API
+                    endpoints to support personalized nutrition workflows. Delivered a seamless experience for both
+                    end‑users
+                    and administrators by combining robust back‑end logic with intuitive management tools.
+                </div>
+                <div class="skills-container" style="margin-top: auto;">
+                    <span class="skill-tag">Python</span>
+                    <span class="skill-tag">Django</span>
+                    <span class="skill-tag">DRF</span>
+                    <span class="skill-tag">MySQL</span>
+                    <span class="skill-tag">Ajax</span>
+                    <span class="skill-tag">Pytest</span>
+                    <span class="skill-tag">Unit Testing</span>
+                    <span class="skill-tag">Postman</span>
+                    <span class="skill-tag">Git</span>
+                    <span class="skill-tag">GitHub</span>
+                </div>
+            </div>
+
+
+            <div class="project-card">
+                <div class="project-header">
+                    <img src="./images/proj/github.png" alt="Video Sharing" class="project-icon">
+                    <div>
+                        <h3 class="project-title"><a href="https://github.com/YasinSamooei/Movie_subscription_site"
+                                                     target="_blank">Movie streaming platform</a></h3>
+                        <div class="date-range" style="margin-top: 5px;">
+                            <i class="far fa-calendar"></i>
+                            <span>Jun 2023 – Aug 2023</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="exp-desc">
+                    The movie and series subscription site is an open‑source project developed with Django, designed as
+                    a
+                    versatile model for content‑driven platforms. Beyond supporting subscription‑based access to films
+                    and
+                    series, the system demonstrates how Django can be leveraged to build scalable and maintainable
+                    applications
+                    for blogs, educational content, and multimedia distribution.
+
+                    Key features include:
+
+                    User management and authentication with personalized profiles
+
+                    Subscription workflows for accessing premium video content
+
+                    Content publishing modules adaptable for blogs, training materials, and media libraries
+
+                    Customizable admin panel for managing users, subscriptions, and content efficiently
+
+                    Integration with modern front‑end technologies for a seamless user experience
+
+                </div>
+                <div class="skills-container" style="margin-top: auto;">
+                    <span class="skill-tag">Django</span>
+                    <span class="skill-tag">MySQL</span>
+                    <span class="skill-tag">Ajax</span>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <div class="project-header">
+                    <img src="./images/proj/tip.png" alt="Tiphub" class="project-icon">
+                    <div>
+                        <h3 class="project-title"><a href="https://tiphub.net" target="_blank">Tiphub</a></h3>
+                        <div class="date-range" style="margin-top: 5px;">
+                            <i class="far fa-calendar"></i>
+                            <span>Oct 2022 - Aug 2023</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="exp-desc">
+                    TipHub was an online programming education platform built with Django and Django REST Framework,
+                    offering single‑session video tutorials. I served as the Back‑End Developer and Site Administrator,
+                    where I designed and maintained the platform’s core architecture and managed diverse video and
+                    article publishing networks. In addition to my technical role, I also contributed as a lecturer,
+                    delivering programming content and supporting the platform’s educational mission.
+                </div>
+                <div class="skills-container" style="margin-top: auto;">
+                    <span class="skill-tag">Django</span>
+                    <span class="skill-tag">MySQL</span>
+                    <span class="skill-tag">Ajax</span>
+                    <span class="skill-tag">JavaScript</span>
+                    <span class="skill-tag">Git</span>
+                </div>
+            </div>
+
+
+<!--        </div>-->
+    </section>
+
+    <!-- Events Section -->
+    <section class="section" id="events">
+        <h2 class="section-title mono">Conferences & Events</h2>
+        <div class="card">
+            <h3 style="color: var(--accent); margin-bottom: 20px; font-size: 22px;">Events, Talks & Awards</h3>
+            <p style="margin-bottom: 25px; color: var(--text-secondary); line-height: 1.8;">Showcasing a track record of participation in national and international events, delivering specialized talks and lectures, and presenting innovative products in artificial intelligence and digital technologies. This section highlights achievements such as keynote speeches, panel discussions, and recognition for contributions to human health, environmental protection, and advanced software development.</p>
+
+            <div class="events-grid">
+                <div class="event-card" data-event="event1">
+                    <img src="./images/event/event-1.jpg" alt="Hope Era Event" class="event-img">
+                    <div class="event-overlay">
+                        <div class="event-title">AI in Health & Environment</div>
+                        <div class="event-date">Tabriz University · 2025</div>
+                    </div>
+                </div>
+
+<!--                <div class="event-card" data-event="event2">-->
+<!--                    <img src="images/event2.jpg" alt="Panel Discussion" class="event-img">-->
+<!--                    <div class="event-overlay">-->
+<!--                        <div class="event-title">Expert Panel Discussion</div>-->
+<!--                        <div class="event-date">Tabriz University · 2023</div>-->
+<!--                    </div>-->
+<!--                </div>-->
+
+<!--                <div class="event-card" data-event="event3">-->
+<!--                    <img src="images/event3.jpg" alt="Certificate" class="event-img">-->
+<!--                    <div class="event-overlay">-->
+<!--                        <div class="event-title">Participation Certificate</div>-->
+<!--                        <div class="event-date">National Hope Era Event</div>-->
+<!--                    </div>-->
+<!--                </div>-->
+
+<!--                <div class="event-card" data-event="event4">-->
+<!--                    <img src="images/event4.jpg" alt="Networking" class="event-img">-->
+<!--                    <div class="event-overlay">-->
+<!--                        <div class="event-title">Networking Session</div>-->
+<!--                        <div class="event-date">Tabriz University · 2023</div>-->
+<!--                    </div>-->
+<!--                </div>-->
+            </div>
+        </div>
+    </section>
+
+    <!-- Education Section -->
+    <section class="section" id="education">
+        <h2 class="section-title mono">Education</h2>
+        <div class="cards-grid">
+            <div class="card">
+                <div class="edu-item">
+                    <h3 class="edu-degree">M.Sc. Digital Electronics</h3>
+                    <div class="edu-institution">Islamic Azad University, Isfahan</div>
+                    <div class="date-range" style="margin-top: 10px;">
+                        <i class="far fa-calendar"></i>
+                        <span>Sep 2025 - Present</span>
+                    </div>
+                    <p style="margin-top: 15px; color: var(--text-secondary); line-height: 1.7;">Specialization in AI,
+                        Computer Vision (OpenCV) and Embedded Systems for IoT applications.</p>
+                </div>
+
+                <div class="edu-item">
+                    <h3 class="edu-degree">B.Sc. Electrical Engineering - Electronics</h3>
+                    <div class="edu-institution">Islamic Azad University, Isfahan</div>
+                    <div class="date-range" style="margin-top: 10px;">
+                        <i class="far fa-calendar"></i>
+                        <span>Sep 2021 - Apr 2025</span>
+                        <span>Grade: 19.14</span>
+                    </div>
+                </div>
+
+                <div class="edu-item">
+                    <h3 class="edu-degree">Diploma of Education - Mathematics</h3>
+                    <div class="edu-institution">Shohadaye Adab</div>
+                    <div class="date-range" style="margin-top: 10px;">
+                        <i class="far fa-calendar"></i>
+                        <span>Sep 2018 - Sep 2021</span>
+                        <span>Grade: 19.64</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3 style="color: var(--accent); margin-bottom: 20px; font-size: 20px;">Languages & Skills</h3>
+
+                <div style="margin-bottom: 25px;">
+                    <h4 style="margin-bottom: 12px; font-size: 16px;">Programming Languages</h4>
+                    <div class="skills-container">
+                        <span class="skill-tag">Python (Advanced)</span>
+                        <span class="skill-tag">SQL (Advanced)</span>
+                        <span class="skill-tag">Go (Intermediate)</span>
+                        <span class="skill-tag">JavaScript (Intermediate)</span>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 25px;">
+                    <h4 style="margin-bottom: 12px; font-size: 16px;">Spoken Languages</h4>
+                    <div class="skills-container">
+                        <span class="skill-tag">Persian (Native)</span>
+                        <span class="skill-tag">English (Professional)</span>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 style="margin-bottom: 12px; font-size: 16px;">Soft Skills</h4>
+                    <div class="skills-container">
+                        <span class="skill-tag">Problem Solving</span>
+                        <span class="skill-tag">Team Leadership</span>
+                        <span class="skill-tag">Public Speaking</span>
+                        <span class="skill-tag">Teaching</span>
+                        <span class="skill-tag">Collaboration</span>
+                        <span class="skill-tag">Adaptability</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<!-- Modal -->
+<div class="modal" id="eventModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 class="modal-title" id="modalTitle">Event Title</h3>
+            <button class="modal-close" id="modalClose">&times;</button>
+        </div>
+        <div class="modal-body">
+            <img id="modalImage" src="" alt="" class="modal-img">
+            <div id="modalDescription"></div>
+        </div>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer id="contact">
+    <div class="container">
+        <p style="font-size: 16px; margin-bottom: 10px;">&copy; 2026 Yasin Samooei. All rights reserved.</p>
+        <p style="margin-bottom: 20px; color: var(--text-secondary);">Backend Developer & AI Specialist</p>
+        <p style="margin-bottom: 25px;"><strong>Email:</strong> yasinsamooei.official@gmail.com |
+            <strong>Location:</strong> Isfahan, Iran</p>
+        <div class="social-links" style="justify-content: center;">
+            <a href="mailto:yasinsamooei.official@gmail.com" class="social-link" title="Email">
+                <i class="fas fa-envelope"></i>
+            </a>
+            <a href="https://github.com/YasinSamooei" target="_blank" class="social-link" title="GitHub">
+                <i class="fab fa-github"></i>
+            </a>
+            <a href="https://www.linkedin.com/in/yasin-samooei" target="_blank" class="social-link" title="LinkedIn">
+                <i class="fab fa-linkedin"></i>
+            </a>
+            <a href="https://instagram.com/y.electrocode" target="_blank" class="social-link" title="Instagram">
+                <i class="fab fa-instagram"></i>
+            </a>
+        </div>
+    </div>
+</footer>
+
+<script>
+    // Create particles
+    const particlesContainer = document.getElementById('particles');
+    for (let i = 0; i < 50; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        particle.style.left = Math.random() * 100 + '%';
+        particle.style.animationDelay = Math.random() * 15 + 's';
+        particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+        particlesContainer.appendChild(particle);
+    }
+
+    // Smooth scrolling
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({behavior: 'smooth', block: 'start'});
+            }
+        });
+    });
+
+    // Event modal
+    const modal = document.getElementById('eventModal');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalImage = document.getElementById('modalImage');
+    const modalDescription = document.getElementById('modalDescription');
+    const modalClose = document.getElementById('modalClose');
+
+    const eventData = {
+        event1: {
+            title: 'AI in Health & Environment',
+            image: './images/event/event-1.jpg',
+            description: '<p style="line-height: 1.8; margin-bottom: 15px;">I am proud to have spoken at the 8th National Asr‑e Omid Specialized Panel held at the University of Tabriz, where I presented my AI‑based product focusing on the role of artificial intelligence in advancing human health and protecting the environment, sharing my ideas on how AI can address real‑world challenges in healthcare and sustainability, and experiencing the honor of contributing alongside other talented experts and innovators in this inspiring national event.</p><p style="line-height: 1.8; margin-bottom: 15px;">In this presentation, I shared insights and experiences about practical applications of AI in health and environmental sustainability. Participation in this national event and interaction with experts and innovators in the field was a valuable and inspiring experience for me.</p><h4 style="color: var(--accent); margin: 20px 0 10px;">Topics Covered:</h4><ul style="margin-left: 20px; line-height: 2;"><li>AI applications in medical image processing</li><li>Environmental data analysis using machine learning</li><li>Integration of AI with IoT for sustainable solutions</li><li>Future trends in AI for healthcare</li></ul>'
+        },
+        event2: {
+            title: 'Expert Panel Discussion',
+            image: 'images/event2.jpg',
+            description: '<p style="line-height: 1.8; margin-bottom: 15px;">Participated as an expert panelist in the specialized discussion on "The Future of AI in Iranian Industry" at Tabriz University.</p><p style="line-height: 1.8; margin-bottom: 15px;">The panel brought together industry experts, academics, and innovators to discuss practical applications of artificial intelligence in various sectors including healthcare, agriculture, and environmental management.</p><h4 style="color: var(--accent); margin: 20px 0 10px;">Key Discussion Points:</h4><ul style="margin-left: 20px; line-height: 2;"><li>Challenges in AI implementation in Iranian context</li><li>Opportunities for AI startups</li><li>Government policies supporting AI development</li><li>Educational requirements for AI workforce</li></ul>'
+        },
+        event3: {
+            title: 'Participation Certificate',
+            image: 'images/event3.jpg',
+            description: '<p style="line-height: 1.8; margin-bottom: 15px;">Received certificate of participation in the 8th National Hope Era Event for presenting innovative AI solutions.</p><p style="line-height: 1.8; margin-bottom: 15px;">The certificate acknowledges active participation and contribution to the national dialogue on technological innovation and artificial intelligence applications in Iran.</p><h4 style="color: var(--accent); margin: 20px 0 10px;">Event Details:</h4><ul style="margin-left: 20px; line-height: 2;"><li><strong>Event:</strong> 8th National Hope Era Event</li><li><strong>Organizer:</strong> Islamic Azad University, Tabriz Branch</li><li><strong>Date:</strong> 2023</li><li><strong>Focus Area:</strong> Artificial Intelligence & Innovation</li></ul>'
+        },
+        event4: {
+            title: 'Networking Session',
+            image: 'images/event4.jpg',
+            description: '<p style="line-height: 1.8; margin-bottom: 15px;">Networking session with industry professionals, academics, and fellow innovators at the National Hope Era Event.</p><p style="line-height: 1.8; margin-bottom: 15px;">This session provided valuable opportunities to connect with potential collaborators, discuss technical challenges, and explore future projects in the field of artificial intelligence and embedded systems.</p><h4 style="color: var(--accent); margin: 20px 0 10px;">Networking Outcomes:</h4><ul style="margin-left: 20px; line-height: 2;"><li>Connected with 3 potential research collaborators</li><li>Discussed internship opportunities with tech companies</li><li>Received feedback on my AI projects from industry experts</li><li>Explored possibilities for academic-industry partnerships</li></ul>'
+        }
+    };
+
+    document.querySelectorAll('.event-card').forEach(card => {
+        card.addEventListener('click', function () {
+            const eventId = this.dataset.event;
+            const event = eventData[eventId];
+
+            modalTitle.textContent = event.title;
+            modalImage.src = event.image;
+            modalImage.alt = event.title;
+            modalDescription.innerHTML = event.description;
+
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+    });
+
+    modalClose.addEventListener('click', () => {
+        modal.classList.remove('active');
+        document.body.style.overflow = 'auto';
+    });
+
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+    });
+</script>
+</body>
+</html>
